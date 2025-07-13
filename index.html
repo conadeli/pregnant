@@ -169,7 +169,7 @@
                     <div class="diary-date-selector">
                         <label for="diaryDate">날짜 선택:</label>
                         <div class="diary-calendar-container">
-                            <input type="date" id="diaryDate" class="date-input">
+                            <input type="text" id="diaryDate" class="date-input" readonly placeholder="날짜를 선택하세요">
                             <div id="diaryCalendar" class="diary-calendar">
                                 <div class="calendar-header">
                                     <button id="prevMonth" class="calendar-nav">‹</button>
@@ -218,6 +218,29 @@
                 <div id="foodList" class="food-list"></div>
             </section>
         </main>
+        
+        <!-- 설정 버튼 -->
+        <div class="settings-fab">
+            <button id="settingsBtn" class="settings-btn">⚙️</button>
+        </div>
+        
+        <!-- 설정 팝업 -->
+        <div id="settingsPopup" class="popup-overlay">
+            <div class="popup-content">
+                <h3>⚙️ 설정</h3>
+                <div class="settings-options">
+                    <button id="resetNotificationSettings" class="settings-option-btn">
+                        🔔 알림 설정 다시 하기
+                    </button>
+                    <button id="resetWelcomePopup" class="settings-option-btn">
+                        👋 환영 팝업 다시 보기
+                    </button>
+                </div>
+                <div class="popup-buttons">
+                    <button id="closeSettings" class="popup-btn secondary">닫기</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="main.js"></script>

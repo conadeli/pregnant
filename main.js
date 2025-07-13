@@ -385,6 +385,43 @@ function setupEventListeners() {
         });
     }
     
+    // 설정 관련
+    const settingsBtn = document.getElementById('settingsBtn');
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', showSettingsPopup);
+        settingsBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            showSettingsPopup();
+        });
+    }
+    
+    const closeSettingsBtn = document.getElementById('closeSettings');
+    if (closeSettingsBtn) {
+        closeSettingsBtn.addEventListener('click', closeSettingsPopup);
+        closeSettingsBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            closeSettingsPopup();
+        });
+    }
+    
+    const resetNotificationBtn = document.getElementById('resetNotificationSettings');
+    if (resetNotificationBtn) {
+        resetNotificationBtn.addEventListener('click', resetNotificationSettings);
+        resetNotificationBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            resetNotificationSettings();
+        });
+    }
+    
+    const resetWelcomeBtn = document.getElementById('resetWelcomePopup');
+    if (resetWelcomeBtn) {
+        resetWelcomeBtn.addEventListener('click', resetWelcomePopup);
+        resetWelcomeBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            resetWelcomePopup();
+        });
+    }
+    
     console.log('이벤트 리스너 설정 완료');
 }
 
@@ -455,14 +492,41 @@ function setupDiary() {
     const diaryDateInput = document.getElementById('diaryDate');
     const today = new Date();
     
-    // 오늘 날짜로 초기화
-    diaryDateInput.value = today.toISOString().split('T')[0];
+    // 오늘 날짜로 초기화 (텍스트 형태로)
+    const todayFormatted = today.toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).replace(/\./g, '-').replace(/ /g, '').slice(0, -1);
+    diaryDateInput.value = todayFormatted;
+    diaryDateInput.dataset.dateValue = today.toISOString().split('T')[0];
     
     // 달력 초기화
     initializeDiaryCalendar();
     
-    // 날짜 입력창 클릭 시 달력 토글
-    diaryDateInput.addEventListener('click', toggleDiaryCalendar);
+    // 날짜 입력창 클릭 시 커스텀 달력만 표시
+    diaryDateInput.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleDiaryCalendar();
+    });
+    
+    // 포커스 방지
+    diaryDateInput.addEventListener('focus', function(e) {
+        e.preventDefault();
+        this.blur();
+    });
+    
+    // 모든 입력 방지
+    diaryDateInput.addEventListener('keydown', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    diaryDateInput.addEventListener('input', function(e) {
+        e.preventDefault();
+        return false;
+    });
     
     // 달력 외부 클릭 시 닫기
     document.addEventListener('click', (e) => {
@@ -480,7 +544,7 @@ function setupDiary() {
 
 function loadDiaryForDate() {
     const diaryDateInput = document.getElementById('diaryDate');
-    const selectedDate = diaryDateInput.value;
+    const selectedDate = diaryDateInput.dataset.dateValue;
     const diaryContent = document.getElementById('diaryContent');
     const diaryTitle = document.getElementById('diaryTitle');
     
@@ -514,15 +578,16 @@ function saveDiary() {
     }
     
     const selectedDate = diaryDateInput.value;
+    const dateValue = diaryDateInput.dataset.dateValue;
     const content = diaryContent.value ? diaryContent.value.trim() : '';
     
-    if (!selectedDate) {
+    if (!dateValue) {
         alert('날짜를 선택해주세요.');
         return;
     }
     
     try {
-        const diaryKey = `diary_${selectedDate}`;
+        const diaryKey = `diary_${dateValue}`;
         localStorage.setItem(diaryKey, content);
         console.log('일기 저장 완료:', diaryKey, content.length + '글자');
     } catch (error) {
@@ -609,8 +674,11 @@ function renderDiaryCalendar() {
     calendarDays.innerHTML = '';
     
     const today = new Date();
-    const selectedDate = document.getElementById('diaryDate').value;
+    today.setHours(0, 0, 0, 0); // 자정으로 정규화
+    const diaryDateInput = document.getElementById('diaryDate');
+    const selectedDate = diaryDateInput.dataset.dateValue;
     
+    // 42일 (6주 × 7일) 달력 생성
     for (let i = 0; i < 42; i++) {
         const date = new Date(startDate);
         date.setDate(startDate.getDate() + i);
@@ -644,7 +712,14 @@ function renderDiaryCalendar() {
         
         // 클릭 이벤트
         dayElement.addEventListener('click', () => {
-            document.getElementById('diaryDate').value = dateKey;
+            const formattedDate = date.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).replace(/\./g, '-').replace(/ /g, '').slice(0, -1);
+            
+            diaryDateInput.value = formattedDate;
+            diaryDateInput.dataset.dateValue = dateKey;
             loadDiaryForDate();
             document.getElementById('diaryCalendar').classList.remove('show');
         });
@@ -1204,6 +1279,32 @@ function showRecommendationPopup() {
 // 추천 음식 팝업 닫기
 function closeRecommendationPopup() {
     document.getElementById('recommendationPopup').classList.remove('show');
+}
+
+// 설정 팝업 관련 함수들
+function showSettingsPopup() {
+    document.getElementById('settingsPopup').classList.add('show');
+}
+
+function closeSettingsPopup() {
+    document.getElementById('settingsPopup').classList.remove('show');
+}
+
+function resetNotificationSettings() {
+    localStorage.removeItem('notificationStatus');
+    closeSettingsPopup();
+    setTimeout(() => {
+        showNotificationPopup();
+    }, 500);
+}
+
+function resetWelcomePopup() {
+    localStorage.removeItem('welcomePopupNeverShow');
+    localStorage.removeItem('welcomePopupHideUntil');
+    closeSettingsPopup();
+    setTimeout(() => {
+        showWelcomePopup();
+    }, 500);
 }
 
 // 페이지 로드 애니메이션
