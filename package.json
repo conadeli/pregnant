@@ -1,0 +1,14 @@
+{
+  "name": "pregnancy-care-app",
+  "private": true,
+  "version": "1.0.0",
+  "description": "임산부를 위한 케어 도우미 앱",
+  "scripts": {
+    "dev": "npx http-server . -p 3000 -c-1",
+    "build": "echo 'No build needed for static files'",
+    "preview": "python -m http.server 4173"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

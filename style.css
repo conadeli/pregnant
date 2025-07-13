@@ -1,0 +1,1355 @@
+/* 기본 리셋 및 변수 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #FF69B4;
+    --secondary-color: #FFE4E1;
+    --accent-color: #FF1493;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --background-color: #F8F9FA;
+    --card-background: #FFFFFF;
+    --border-radius: 16px;
+    --shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 4px 25px rgba(0, 0, 0, 0.12);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* 앱 컨테이너 */
+.app-container {
+    max-width: 428px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background-color: var(--background-color);
+    position: relative;
+}
+
+/* 헤더 */
+.header {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    padding: 60px 24px 32px;
+    text-align: center;
+    position: relative;
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: var(--background-color);
+    border-radius: 20px 20px 0 0;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.date-info {
+    position: relative;
+    z-index: 1;
+}
+
+.pregnancy-week {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 16px;
+    opacity: 0.95;
+    margin-bottom: 12px;
+}
+
+#pregnancyWeek {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.edit-date-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.edit-date-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 카드 스타일 */
+.card {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+.card h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 광고 배너 카드 */
+.ad-banner-card {
+    padding: 16px 20px;
+    margin-bottom: 0;
+    background: var(--card-background);
+    border: 1px solid #F0F0F0;
+}
+
+.ad-banner-header {
+    margin-bottom: 12px;
+}
+
+.ad-label {
+    font-size: 12px;
+    color: #999;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ad-banner-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    padding: 12px 16px;
+    background: #FAFAFA;
+    border: 1px solid #F0F0F0;
+}
+
+.ad-banner-link:hover {
+    background: #F5F5F5;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ad-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ad-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.ad-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ad-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.ad-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.3;
+}
+
+.ad-arrow {
+    font-size: 16px;
+    color: var(--primary-color);
+    font-weight: 600;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.ad-banner-link:hover .ad-arrow {
+    transform: translateX(2px);
+}
+
+/* 날짜 선택 */
+.date-selector {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.date-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background-color: #FAFAFA;
+}
+
+.date-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+}
+
+.today-btn {
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.today-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+/* 태동 기록 섹션 */
+.fetal-movement {
+    text-align: center;
+}
+
+.movement-counter {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--secondary-color), #FFF0F5);
+    border-radius: 12px;
+    border: 2px solid #FFE4E1;
+}
+
+.count-label {
+    font-size: 16px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.count-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.count-unit {
+    font-size: 18px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* 태동 버튼 그룹 */
+.movement-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+}
+
+.record-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    border: none;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+    flex: 1;
+}
+
+.stats-btn {
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    color: white;
+    border: none;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    flex: 1;
+}
+
+.stats-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+.record-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+}
+
+.record-btn:active {
+    transform: translateY(0);
+    transition: transform 0.1s ease;
+}
+
+.record-btn.recording {
+    animation: pulse 0.6s ease-in-out;
+}
+
+.record-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* 통계 팝업 스타일 */
+.stats-popup {
+    max-width: 450px;
+    width: 95%;
+    max-height: 80vh;
+}
+
+.stats-popup-content {
+    padding: 20px 24px 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* 차트 섹션 스타일 */
+.chart-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    align-items: center;
+}
+
+.month-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background-color: #FAFAFA;
+}
+
+.month-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+}
+
+.chart-btn {
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.chart-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-bottom: 20px;
+    background: #FAFAFA;
+    border-radius: 12px;
+    padding: 16px;
+    display: none;
+}
+
+.chart-container.show {
+    display: block;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.chart-stats {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.chart-stats.show {
+    display: grid;
+    animation: fadeIn 0.5s ease-out 0.2s both;
+}
+
+.stat-item {
+    background: linear-gradient(135deg, var(--secondary-color), #FFF0F5);
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    border: 2px solid #FFE4E1;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.stat-unit {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-left: 4px;
+}
+
+/* 추천 음식 섹션 */
+.recommendation-btn {
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+}
+
+.recommendation-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+/* 입력 요소들 */
+textarea, input[type="text"] {
+    width: 100%;
+    padding: 16px;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    transition: all 0.3s ease;
+    background-color: #FAFAFA;
+}
+
+textarea:focus, input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+}
+
+textarea {
+    min-height: 120px;
+    margin-bottom: 16px;
+}
+
+textarea:disabled, input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 버튼 스타일 */
+.save-btn, .add-btn {
+    background: linear-gradient(135deg, #4CAF50, #45A049);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(76, 175, 80, 0.3);
+}
+
+.save-btn:hover, .add-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+}
+
+.save-btn:disabled, .add-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 우리 아기 일기 섹션 */
+.diary-header {
+    margin-bottom: 20px;
+}
+
+.diary-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.diary-date-selector {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.diary-date-selector label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+#diaryContent {
+    min-height: 150px;
+    font-size: 16px;
+    line-height: 1.6;
+    background: linear-gradient(135deg, #FAFAFA, #F8F9FA);
+    border: 2px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    resize: vertical;
+}
+
+#diaryContent:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+    transform: translateY(-1px);
+}
+
+#diaryContent::placeholder {
+    color: #999;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.save-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+}
+
+.save-btn:active {
+    transform: translateY(0);
+    transition: transform 0.1s ease;
+}
+
+.save-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.save-btn.saved {
+    background: linear-gradient(135deg, #4CAF50, #45A049);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+/* 음식 기록 */
+.food-input {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.food-input input {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.food-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.food-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #F8F9FA;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.food-item-content {
+    flex: 1;
+}
+
+.food-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.food-time {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.delete-food {
+    background: #FF6B6B;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.delete-food:hover {
+    background: #FF5252;
+    transform: scale(1.05);
+}
+
+/* 팝업 스타일 */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.popup-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-content {
+    background: white;
+    padding: 32px 24px;
+    border-radius: 20px;
+    max-width: 340px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.popup-overlay.show .popup-content {
+    transform: translateY(0);
+}
+
+.popup-content h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.popup-content h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.popup-content p {
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.popup-content .date-input {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.popup-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.popup-btn {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.popup-btn.primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+}
+
+.popup-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+}
+
+.popup-btn.secondary {
+    background: #F3F4F6;
+    color: var(--text-primary);
+    border: 1px solid #E5E7EB;
+}
+
+.popup-btn.secondary:hover {
+    background: #E5E7EB;
+    transform: translateY(-1px);
+}
+
+/* 추천 음식 팝업 */
+.recommendation-popup {
+    max-width: 400px;
+    width: 95%;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 24px 16px;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.popup-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: #F0F0F0;
+    color: #666;
+}
+
+.recommendation-content {
+    padding: 20px 24px 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.food-recommendation {
+    background: #F8F9FA;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.food-recommendation:last-child {
+    margin-bottom: 0;
+}
+
+.food-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.food-description {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.food-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.food-detail-item {
+    display: flex;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+.detail-value {
+    color: var(--text-secondary);
+    flex: 1;
+}
+
+/* 달력 관련 함수들 */
+.diary-calendar-container {
+    position: relative;
+    display: inline-block;
+}
+
+.diary-calendar {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    width: 300px;
+    padding: 16px;
+    margin-top: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.diary-calendar.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.calendar-nav {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.calendar-nav:hover {
+    background: var(--secondary-color);
+}
+
+.calendar-month {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 8px;
+}
+
+.weekday {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 8px 4px;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.calendar-day {
+    position: relative;
+    text-align: center;
+    padding: 8px 4px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 14px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.calendar-day:hover {
+    background: var(--secondary-color);
+}
+
+.calendar-day.other-month {
+    color: #ccc;
+}
+
+.calendar-day.today {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.calendar-day.selected {
+    background: var(--accent-color);
+    color: white;
+    font-weight: 600;
+}
+
+.calendar-day.has-diary::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 6px;
+    height: 6px;
+    background: #E53935;
+    border-radius: 50%;
+}
+
+.calendar-day.today.has-diary::after,
+.calendar-day.selected.has-diary::after {
+    background: #FFE4E1;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 428px) {
+    .app-container {
+        max-width: 100%;
+    }
+    
+    .main-content {
+        padding: 16px;
+    }
+    
+    .card {
+        padding: 20px;
+    }
+    
+    .popup-content {
+        padding: 24px 20px;
+        max-width: 320px;
+    }
+    
+    .food-input {
+        flex-direction: column;
+    }
+    
+    .food-input input {
+        margin-bottom: 12px;
+    }
+    
+    .date-selector {
+        flex-direction: column;
+    }
+    
+    .date-input {
+        margin-bottom: 12px;
+    }
+    
+    .chart-controls {
+        flex-direction: column;
+    }
+    
+    .month-input {
+        margin-bottom: 12px;
+    }
+    
+    .chart-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .movement-buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .record-btn, .stats-btn {
+        flex: none;
+        width: 100%;
+    }
+    
+    .stats-popup {
+        max-width: 350px;
+        margin: 20px;
+    }
+    
+    .stats-popup-content {
+        padding: 16px 20px 20px;
+    }
+    
+    .ad-banner-card {
+        padding: 14px 16px;
+    }
+    
+    .ad-banner-content {
+        gap: 10px;
+    }
+    
+    .ad-icon {
+        font-size: 20px;
+    }
+    
+    .ad-title {
+        font-size: 14px;
+    }
+    
+    .ad-subtitle {
+        font-size: 12px;
+    }
+    
+    .ad-arrow {
+        font-size: 14px;
+    }
+    
+    .diary-date-selector {
+        flex-direction: row;
+        gap: 12px;
+        align-items: center;
+    }
+    
+    .diary-calendar-container {
+        max-width: 160px;
+    }
+    
+    .diary-calendar {
+        width: 280px;
+        padding: 12px;
+        right: -60px;
+    }
+    
+    .calendar-month {
+        font-size: 16px;
+    }
+    
+    .calendar-nav {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+    }
+    
+    .weekday {
+        font-size: 12px;
+        padding: 8px 2px;
+    }
+    
+    .calendar-day {
+        min-height: 32px;
+        font-size: 13px;
+        padding: 8px 2px;
+    }
+    
+    .calendar-day.has-diary::after {
+        width: 6px;
+        height: 6px;
+        top: 3px;
+        right: 3px;
+    }
+    
+    .diary-date-selector label {
+        font-size: 14px;
+    }
+    
+    #diaryContent {
+        min-height: 140px;
+        padding: 18px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 375px) {
+    .header {
+        padding: 50px 20px 28px;
+    }
+    
+    .header h1 {
+        font-size: 22px;
+    }
+    
+    .count-number {
+        font-size: 40px;
+    }
+    
+    .record-btn {
+        padding: 14px 28px;
+        font-size: 16px;
+    }
+    
+    .chart-container {
+        height: 250px;
+        padding: 12px;
+    }
+    
+    .ad-banner-card {
+        padding: 12px 14px;
+    }
+    
+    .ad-banner-link {
+        padding: 10px 12px;
+    }
+    
+    .ad-banner-content {
+        gap: 8px;
+    }
+    
+    .ad-icon {
+        font-size: 18px;
+    }
+    
+    .ad-title {
+        font-size: 13px;
+    }
+    
+    .ad-subtitle {
+        font-size: 11px;
+    }
+    
+    .recommendation-popup {
+        max-width: 350px;
+        margin: 20px;
+    }
+    
+    .popup-header {
+        padding: 20px 20px 12px;
+    }
+    
+    .recommendation-content {
+        padding: 16px 20px 20px;
+    }
+    
+    .food-recommendation {
+        padding: 16px;
+        margin-bottom: 20px;
+    }
+    
+    .food-name {
+        font-size: 16px;
+    }
+    
+    .food-description {
+        font-size: 14px;
+    }
+    
+    .food-detail-item {
+        font-size: 13px;
+    }
+    
+    .detail-label {
+        min-width: 70px;
+    }
+    
+    .diary-header h2 {
+        font-size: 22px;
+    }
+    
+    .diary-calendar-container {
+        max-width: 140px;
+    }
+    
+    .diary-calendar {
+        width: 260px;
+        right: -80px;
+    }
+    
+    #diaryContent {
+        min-height: 120px;
+        padding: 16px;
+        font-size: 15px;
+    }
+    
+    .save-btn {
+        padding: 14px 28px;
+        font-size: 16px;
+    }
+}
+
+/* 로딩 애니메이션 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.card:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.card:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+.card:nth-child(5) {
+    animation-delay: 0.4s;
+}
+
+/* 모든 텍스트 색상 강제 고정 */
+* {
+    color: #333333 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #333333 !important;
+}
+
+p, span, div, label {
+    color: #333333 !important;
+}
+
+textarea, input[type="text"], .date-input {
+    color: #333333 !important;
+    background-color: #FAFAFA !important;
+}
+
+.food-name {
+    color: #333333 !important;
+}
+
+.food-time {
+    color: #666666 !important;
+}
+
+.popup-content {
+    background: white !important;
+    color: #333333 !important;
+}
+
+.popup-content h2, .popup-content h3, .popup-content p {
+    color: #333333 !important;
+}
+
+/* 버튼 텍스트는 흰색 유지 */
+.record-btn, .stats-btn, .save-btn, .add-btn, .popup-btn.primary, .recommendation-btn, .chart-btn, .today-btn {
+    color: white !important;
+}
+
+/* 헤더 텍스트는 흰색 유지 */
+.header, .header h1, .header span {
+    color: white !important;
+}

@@ -1,0 +1,25 @@
+{
+  "name": "임산부 케어 도우미",
+  "short_name": "임산부케어",
+  "description": "임산부를 위한 건강 관리 도우미",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#FF69B4",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%23FF69B4' rx='20'/><text x='96' y='96' font-size='120' text-anchor='middle' dominant-baseline='central'>🤱</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%23FF69B4' rx='50'/><text x='256' y='256' font-size='320' text-anchor='middle' dominant-baseline='central'>🤱</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["health", "lifestyle"],
+  "lang": "ko"
+}

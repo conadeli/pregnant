@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>임산부 케어 도우미</title>
+    <meta name="description" content="임산부를 위한 케어 도우미 앱">
+    
+    <!-- PWA 관련 메타 태그 -->
+    <meta name="theme-color" content="#FF69B4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="임산부 케어">
+    
+    <!-- 아이콘 -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤱</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤱</text></svg>">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    
+    <!-- 환영 팝업 -->
+    <div id="welcomePopup" class="popup-overlay">
+        <div class="popup-content">
+            <h2>임산부 케어 도우미에 오신 걸 환영합니다! 🤱</h2>
+            <p>건강한 임신 기간을 위한 나만의 도우미입니다.</p>
+            <div class="popup-buttons">
+                <button id="hideFor7Days" class="popup-btn secondary">7일간 보이지 않기</button>
+                <button id="hideForever" class="popup-btn secondary">다시 보지 않기</button>
+                <button id="installApp" class="popup-btn primary">홈 화면에 바로가기 만들기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 리마인더 팝업 -->
+    <div id="reminderPopup" class="popup-overlay">
+        <div class="popup-content">
+            <h3>🕙 건강 체크 시간</h3>
+            <p id="reminderMessage"></p>
+            <div class="popup-buttons">
+                <button id="closeReminder" class="popup-btn primary">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 임신 기준일 설정 팝업 -->
+    <div id="pregnancyDatePopup" class="popup-overlay">
+        <div class="popup-content">
+            <h3>임신 기준일 설정 📅</h3>
+            <p>마지막 생리 시작일을 입력해주세요</p>
+            <input type="date" id="pregnancyStartDate" class="date-input">
+            <div class="popup-buttons">
+                <button id="savePregnancyDate" class="popup-btn primary">저장하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 알림 권한 요청 팝업 -->
+    <div id="notificationPopup" class="popup-overlay">
+        <div class="popup-content">
+            <h3>🔔 알림 설정</h3>
+            <p>매일 건강 체크 알림을 받으시겠어요?<br>오전 10시에 태동 기록 알림을 보내드립니다.</p>
+            <div class="popup-buttons">
+                <button id="enableNotifications" class="popup-btn primary">알림 허용</button>
+                <button id="skipNotifications" class="popup-btn secondary">나중에</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 추천 음식 팝업 -->
+    <div id="recommendationPopup" class="popup-overlay">
+        <div class="popup-content recommendation-popup">
+            <div class="popup-header">
+                <h3 id="recommendationTitle">이달의 추천 음식</h3>
+                <button id="closeRecommendation" class="close-btn">✕</button>
+            </div>
+            <div id="recommendationContent" class="recommendation-content">
+                <!-- 추천 음식 목록이 여기에 동적으로 생성됩니다 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 태동 통계 팝업 -->
+    <div id="statsPopup" class="popup-overlay">
+        <div class="popup-content stats-popup">
+            <div class="popup-header">
+                <h3>📊 태동 기록 통계</h3>
+                <button id="closeStats" class="close-btn">✕</button>
+            </div>
+            <div class="stats-popup-content">
+                <div class="chart-controls">
+                    <input type="month" id="chartMonth" class="month-input">
+                    <button id="showChart" class="chart-btn">통계 보기</button>
+                </div>
+                <div id="chartContainer" class="chart-container">
+                    <canvas id="movementChart"></canvas>
+                </div>
+                <div id="chartStats" class="chart-stats"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="date-info">
+                <h1>임산부 케어 도우미</h1>
+                <div class="pregnancy-week">
+                    <span id="currentDate"></span>
+                    <span id="pregnancyWeek"></span>
+                </div>
+                <button id="editPregnancyDate" class="edit-date-btn">기준일 수정</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- 날짜 선택 섹션 -->
+            <section class="card">
+                <h2>📅 날짜 선택</h2>
+                <div class="date-selector">
+                    <input type="date" id="selectedDate" class="date-input">
+                    <button id="todayBtn" class="today-btn">오늘</button>
+                </div>
+            </section>
+
+            <!-- 광고 배너 섹션 -->
+            <section class="card ad-banner-card">
+                <div class="ad-banner-header">
+                    <span class="ad-label">광고</span>
+                </div>
+                <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="ad-banner-link">
+                    <div class="ad-banner-content">
+                        <div class="ad-icon">🤱</div>
+                        <div class="ad-text">
+                            <span class="ad-title">임산부 전용 영양제</span>
+                            <span class="ad-subtitle">건강한 임신을 위한 필수 영양소</span>
+                        </div>
+                        <div class="ad-arrow">→</div>
+                    </div>
+                </a>
+            </section>
+
+            <!-- 태동 기록 섹션 -->
+            <section class="card">
+                <h2>태동 기록 👶</h2>
+                <div class="fetal-movement">
+                    <div class="movement-counter">
+                        <span class="count-label">선택한 날짜 기록</span>
+                        <span id="movementCount" class="count-number">0</span>
+                        <span class="count-unit">회</span>
+                    </div>
+                    <div class="movement-buttons">
+                        <button id="recordMovement" class="record-btn">태동 기록하기</button>
+                        <button id="showStatsPopup" class="stats-btn">통계 보기</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 우리 아기 일기 섹션 -->
+            <section class="card">
+                <div class="diary-header">
+                    <h2 id="diaryTitle">👶 우리 아기 일기</h2>
+                    <div class="diary-date-selector">
+                        <label for="diaryDate">날짜 선택:</label>
+                        <div class="diary-calendar-container">
+                            <input type="date" id="diaryDate" class="date-input">
+                            <div id="diaryCalendar" class="diary-calendar">
+                                <div class="calendar-header">
+                                    <button id="prevMonth" class="calendar-nav">‹</button>
+                                    <span id="currentMonth" class="calendar-month"></span>
+                                    <button id="nextMonth" class="calendar-nav">›</button>
+                                </div>
+                                <div class="calendar-weekdays">
+                                    <div class="weekday">일</div>
+                                    <div class="weekday">월</div>
+                                    <div class="weekday">화</div>
+                                    <div class="weekday">수</div>
+                                    <div class="weekday">목</div>
+                                    <div class="weekday">금</div>
+                                    <div class="weekday">토</div>
+                                </div>
+                                <div id="calendarDays" class="calendar-days"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <textarea 
+                    id="diaryContent" 
+                    placeholder="오늘 우리 아기와의 소중한 순간을 기록해보세요...&#10;&#10;예시:&#10;• 오늘 아기가 많이 움직였어요 💕&#10;• 태교 음악을 들려줬더니 조용해졌어요 🎵&#10;• 남편과 함께 아기 이름을 고민했어요 👨‍👩‍👶"
+                    rows="4"
+                ></textarea>
+                <button id="saveDiary" class="save-btn">💝 일기 저장하기</button>
+            </section>
+
+            <!-- 월별 임산부 추천 음식 목록 섹션 -->
+            <section class="card">
+                <h2>🍎 월별 임산부 추천 음식 목록</h2>
+                <button id="showRecommendation" class="recommendation-btn">추천 음식 보기</button>
+            </section>
+
+            <!-- 음식 기록 섹션 -->
+            <section class="card">
+                <h2>섭취 음식 기록 🍎</h2>
+                <div class="food-input">
+                    <input 
+                        type="text" 
+                        id="foodInput" 
+                        placeholder="먹은 음식을 입력하세요"
+                    >
+                    <button id="addFood" class="add-btn">추가하기</button>
+                </div>
+                <div id="foodList" class="food-list"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
